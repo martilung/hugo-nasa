@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PÄEVA KOSMOSEPILT – NASA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="stars-bg" aria-hidden="true"></div>
+
+  <main class="container">
+    <header class="site-header">
+      <div class="badge">NASA PÄEVA KOSMOSEPILT</div>
+      <p id="date-display" class="date-text">LAEN TÄNAST KUUPÄEVA...</p>
+    </header>
+
+    <section id="loading-state" class="card status-card" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="status-text">VÕTAN NASA KOSMOSEKESKUSEST TÄNAST PILTI...</p>
+    </section>
+
+    <section id="error-state" class="card status-card hidden" aria-live="assertive">
+      <p id="error-message" class="status-text error-text">PILDI LAADIMINE EBAÕNNESTUS.</p>
+      <button id="retry-btn" class="action-btn" type="button">PROOVI UUESTI</button>
+    </section>
+
+    <article id="content-state" class="card content-card hidden">
+      <h1 id="picture-title" class="picture-title"></h1>
+
+      <figure class="image-wrapper">
+        <a id="hd-link" href="#" target="_blank" rel="noopener noreferrer" title="AVA PILT TÄISSUURUSES">
+          <img id="space-image" src="" alt="NASA PÄEVA KOSMOSEPILT" loading="eager" />
+        </a>
+        <figcaption class="image-caption">
+          <span id="copyright-text">ALLIKAS: NASA</span>
+          <a id="open-full-btn" href="#" target="_blank" rel="noopener noreferrer" class="full-link">
+            AVA SUUR PILT ↗
+          </a>
+        </figcaption>
+      </figure>
+
+      <section class="explanation-section" aria-label="PILDI SELGITUS">
+        <h2 class="section-heading">MIS ON SELLEL PILDIL?</h2>
+        <div id="picture-explanation" class="explanation-text"></div>
+      </section>
+    </article>
+
+    <footer class="site-footer">
+      <p>PILT UUENEB AUTOMAATSELT 1X PÄEVAS NASA APOD ANDMEBAASIST</p>
+    </footer>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
