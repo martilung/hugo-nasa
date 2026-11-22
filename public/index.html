@@ -10,49 +10,46 @@
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-  <div class="stars-bg" aria-hidden="true"></div>
+  <!-- Üle ekraani kosmosepilt -->
+  <div class="fullscreen-stage">
+    <img id="space-image" class="fullscreen-image hidden" src="" alt="NASA PÄEVA KOSMOSEPILT" loading="eager" />
+  </div>
 
-  <main class="container">
-    <header class="site-header">
-      <div class="badge">NASA PÄEVA KOSMOSEPILT</div>
-      <p id="date-display" class="date-text">LAEN TÄNAST KUUPÄEVA...</p>
-    </header>
+  <!-- Laadimise teade all vasakus nurgas -->
+  <section id="loading-state" class="corner-box status-box" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    <p class="status-text">LAEN NASA TÄNAST KOSMOSEPILTI...</p>
+  </section>
 
-    <section id="loading-state" class="card status-card" aria-live="polite">
-      <div class="spinner" aria-hidden="true"></div>
-      <p class="status-text">VÕTAN NASA KOSMOSEKESKUSEST TÄNAST PILTI...</p>
-    </section>
+  <!-- Veateade all vasakus nurgas -->
+  <section id="error-state" class="corner-box status-box hidden" aria-live="assertive">
+    <p id="error-message" class="status-text error-text">PILDI LAADIMINE EBAÕNNESTUS.</p>
+    <button id="retry-btn" class="control-btn" type="button">PROOVI UUESTI</button>
+  </section>
 
-    <section id="error-state" class="card status-card hidden" aria-live="assertive">
-      <p id="error-message" class="status-text error-text">PILDI LAADIMINE EBAÕNNESTUS.</p>
-      <button id="retry-btn" class="action-btn" type="button">PROOVI UUESTI</button>
-    </section>
-
-    <article id="content-state" class="card content-card hidden">
-      <h1 id="picture-title" class="picture-title"></h1>
-
-      <figure class="image-wrapper">
-        <a id="hd-link" href="#" target="_blank" rel="noopener noreferrer" title="AVA PILT TÄISSUURUSES">
-          <img id="space-image" src="" alt="NASA PÄEVA KOSMOSEPILT" loading="eager" />
+  <!-- Hall tekstikast all vasakus nurgas -->
+  <aside id="content-state" class="corner-box info-box hidden" aria-label="PILDI SELGITUS">
+    <div class="info-toolbar">
+      <div class="meta-badges">
+        <span class="nasa-badge">NASA PÄEVAPILT</span>
+        <span id="date-display" class="date-text"></span>
+      </div>
+      <div class="toolbar-actions">
+        <a id="open-full-btn" href="#" target="_blank" rel="noopener noreferrer" class="control-btn link-btn" title="AVA PILT ORIGINAALSUURUSES">
+          ORIGINAALPILT ↗
         </a>
-        <figcaption class="image-caption">
-          <span id="copyright-text">ALLIKAS: NASA</span>
-          <a id="open-full-btn" href="#" target="_blank" rel="noopener noreferrer" class="full-link">
-            AVA SUUR PILT ↗
-          </a>
-        </figcaption>
-      </figure>
+        <button id="toggle-text-btn" class="control-btn" type="button" aria-expanded="true">
+          PEIDA TEKST
+        </button>
+      </div>
+    </div>
 
-      <section class="explanation-section" aria-label="PILDI SELGITUS">
-        <h2 class="section-heading">MIS ON SELLEL PILDIL?</h2>
-        <div id="picture-explanation" class="explanation-text"></div>
-      </section>
-    </article>
-
-    <footer class="site-footer">
-      <p>PILT UUENEB AUTOMAATSELT 1X PÄEVAS NASA APOD ANDMEBAASIST</p>
-    </footer>
-  </main>
+    <div id="panel-body" class="panel-body">
+      <h1 id="picture-title" class="picture-title"></h1>
+      <div id="picture-explanation" class="explanation-text"></div>
+      <p id="copyright-text" class="copyright-text">ALLIKAS: NASA</p>
+    </div>
+  </aside>
 
   <script src="/app.js"></script>
 </body>

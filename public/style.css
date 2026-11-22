@@ -1,12 +1,12 @@
 :root {
-  --bg-deep: #070b19;
-  --bg-card: rgba(17, 25, 48, 0.88);
-  --border-card: rgba(120, 160, 255, 0.25);
-  --accent: #58a6ff;
-  --accent-soft: rgba(88, 166, 255, 0.16);
-  --text-main: #f8fafc;
-  --text-muted: #bfd2f2;
-  --text-highlight: #ffd166;
+  --bg-dark: #05070e;
+  --gray-box-bg: rgba(68, 76, 90, 0.88);
+  --gray-box-border: rgba(210, 218, 230, 0.35);
+  --btn-bg: rgba(35, 41, 52, 0.9);
+  --btn-bg-hover: rgba(20, 24, 32, 0.98);
+  --text-main: #ffffff;
+  --text-soft: #e2e8f0;
+  --text-accent: #ffe082;
 }
 
 * {
@@ -15,95 +15,86 @@
   padding: 0;
 }
 
+html,
 body {
-  min-height: 100vh;
-  background: radial-gradient(circle at 50% 0%, #162447 0%, var(--bg-deep) 70%);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Atkinson Hyperlegible', 'Verdana', 'Arial', sans-serif;
   text-transform: uppercase;
-  line-height: 1.75;
   letter-spacing: 0.04em;
-  padding: 2rem 1.25rem 3.5rem;
 }
 
-.stars-bg {
+/* Üle-ekraani taustapilt */
+.fullscreen-stage {
   position: fixed;
   inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
-    radial-gradient(2px 2px at 140px 90px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(1.5px 1.5px at 260px 180px, rgba(255, 255, 255, 0.7), transparent),
-    radial-gradient(2px 2px at 340px 60px, rgba(180, 210, 255, 0.9), transparent);
-  background-size: 400px 260px;
-  opacity: 0.35;
-  z-index: 0;
-}
-
-.container {
-  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #111827 0%, #03050a 100%);
   z-index: 1;
-  max-width: 960px;
-  margin: 0 auto;
 }
 
-.site-header {
-  text-align: center;
-  margin-bottom: 1.75rem;
+.fullscreen-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.badge {
-  display: inline-block;
-  background: var(--accent-soft);
-  border: 2px solid var(--accent);
-  color: var(--text-highlight);
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 0.4rem 1.1rem;
-  border-radius: 999px;
-  margin-bottom: 0.65rem;
-  letter-spacing: 0.08em;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.date-text {
-  color: var(--text-muted);
-  font-size: 1.15rem;
-  font-weight: 700;
+/* Hall kast all vasakus nurgas */
+.corner-box {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 10;
+  background: var(--gray-box-bg);
+  border: 2px solid var(--gray-box-border);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-main);
 }
 
-.card {
-  background: var(--bg-card);
-  border: 2px solid var(--border-card);
-  border-radius: 22px;
-  padding: 2rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
-}
-
-.status-card {
-  text-align: center;
-  padding: 3.5rem 2rem;
+.status-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  max-width: min(520px, calc(100vw - 3rem));
 }
 
 .status-text {
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
 }
 
 .error-text {
-  color: #ff8fa3;
-  margin-bottom: 1.5rem;
+  color: #ffcdd2;
 }
 
 .spinner {
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 1.25rem;
-  border: 5px solid rgba(255, 255, 255, 0.18);
-  border-top-color: var(--text-highlight);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 4px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--text-accent);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.9s linear infinite;
 }
 
 @keyframes spin {
@@ -112,101 +103,138 @@ body {
   }
 }
 
-.picture-title {
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  color: var(--text-highlight);
-  text-align: center;
-  margin-bottom: 1.5rem;
-  line-height: 1.35;
-  letter-spacing: 0.05em;
+.info-box {
+  width: min(640px, calc(100vw - 3rem));
+  max-height: min(62vh, calc(100vh - 3rem));
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.4rem;
+  transition: width 0.25s ease, padding 0.25s ease;
 }
 
-.image-wrapper {
-  margin-bottom: 2rem;
-  background: #03060f;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.14);
+.info-box.collapsed {
+  width: auto;
+  max-width: calc(100vw - 3rem);
+  padding: 0.85rem 1.1rem;
 }
 
-.image-wrapper img {
-  display: block;
-  width: 100%;
-  max-height: 75vh;
-  object-fit: contain;
-  margin: 0 auto;
-  background: #02040a;
-}
-
-.image-caption {
+.info-toolbar {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.9rem 1.25rem;
-  background: rgba(10, 15, 32, 0.95);
-  font-size: 0.95rem;
-  color: var(--text-muted);
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-.full-link {
-  color: var(--text-highlight);
-  text-decoration: none;
+.info-box.collapsed .info-toolbar {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.meta-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nasa-badge {
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text-accent);
   font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 8px;
+  letter-spacing: 0.06em;
 }
 
-.full-link:hover,
-.full-link:focus {
-  text-decoration: underline;
+.date-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-soft);
 }
 
-.explanation-section {
-  background: rgba(8, 13, 28, 0.75);
-  border: 2px solid rgba(255, 209, 102, 0.25);
-  border-radius: 16px;
-  padding: 1.75rem;
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.section-heading {
-  font-size: 1.35rem;
-  color: var(--accent);
-  margin-bottom: 1rem;
-  letter-spacing: 0.07em;
+.control-btn {
+  background: var(--btn-bg);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 0.4rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: background 0.15s ease;
+}
+
+.control-btn:hover,
+.control-btn:focus {
+  background: var(--btn-bg-hover);
+}
+
+.link-btn {
+  color: var(--text-accent);
+}
+
+/* Keritav tekstiosa halli kasti sees */
+.panel-body {
+  margin-top: 0.95rem;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+
+.panel-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.panel-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.panel-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+}
+
+.picture-title {
+  font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+  color: var(--text-accent);
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
 }
 
 .explanation-text {
-  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
-  line-height: 1.9;
-  letter-spacing: 0.06em;
-  word-spacing: 0.14em;
-  color: #ffffff;
+  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+  line-height: 1.75;
+  letter-spacing: 0.05em;
+  word-spacing: 0.12em;
   font-weight: 700;
+  color: var(--text-main);
 }
 
 .explanation-text p + p {
-  margin-top: 1.25rem;
+  margin-top: 0.85rem;
 }
 
-.action-btn {
-  background: var(--accent);
-  color: #040814;
-  font-family: inherit;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 0.85rem 1.6rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.site-footer {
-  text-align: center;
-  margin-top: 1.75rem;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  opacity: 0.85;
+.copyright-text {
+  margin-top: 1rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.8rem;
+  color: var(--text-soft);
 }
 
 .hidden {
@@ -214,15 +242,14 @@ body {
 }
 
 @media (max-width: 640px) {
-  body {
-    padding: 1.25rem 0.85rem 2.5rem;
+  .corner-box {
+    left: 0.75rem;
+    bottom: 0.75rem;
   }
 
-  .card {
-    padding: 1.25rem;
-  }
-
-  .explanation-section {
-    padding: 1.25rem;
+  .info-box {
+    width: calc(100vw - 1.5rem);
+    max-height: 55vh;
+    padding: 1rem;
   }
 }

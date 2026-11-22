@@ -1,4 +1,4 @@
-// Kliendipoolne skript NASA päevapildi ja trükitähtedes selgituse kuvamiseks
+// Kliendipoolne skript NASA päevapildi üle-ekraani ja nurgas asuva tekstikasti kuvamiseks
 
 const loadingState = document.getElementById('loading-state');
 const errorState = document.getElementById('error-state');
@@ -9,13 +9,32 @@ const retryBtn = document.getElementById('retry-btn');
 const dateDisplayEl = document.getElementById('date-display');
 const titleEl = document.getElementById('picture-title');
 const imageEl = document.getElementById('space-image');
-const hdLinkEl = document.getElementById('hd-link');
 const openFullBtnEl = document.getElementById('open-full-btn');
 const copyrightEl = document.getElementById('copyright-text');
 const explanationEl = document.getElementById('picture-explanation');
 
+const toggleTextBtn = document.getElementById('toggle-text-btn');
+const panelBody = document.getElementById('panel-body');
+
+let isCollapsed = false;
+
+toggleTextBtn.addEventListener('click', () => {
+  isCollapsed = !isCollapsed;
+  if (isCollapsed) {
+    panelBody.classList.add('hidden');
+    contentState.classList.add('collapsed');
+    toggleTextBtn.textContent = 'NÄITA TEKSTI';
+    toggleTextBtn.setAttribute('aria-expanded', 'false');
+  } else {
+    panelBody.classList.remove('hidden');
+    contentState.classList.remove('collapsed');
+    toggleTextBtn.textContent = 'PEIDA TEKST';
+    toggleTextBtn.setAttribute('aria-expanded', 'true');
+  }
+});
+
 /**
- * Jagab pika trükitähtedes selgituse mugavalt loetavateks lõikudeks (2-3 lauset lõigus)
+ * Jagab pika trükitähtedes selgituse mugavalt loetavateks lõikudeks (2 lauset lõigus)
  */
 function renderReadableParagraphs(container, uppercaseText) {
   container.innerHTML = '';
@@ -54,13 +73,12 @@ async function loadSpacePicture() {
     dateDisplayEl.textContent = data.formattedDate || data.date;
     titleEl.textContent = data.titleEt || data.titleOriginal;
 
-    imageEl.src = data.imageUrl;
-    imageEl.alt = data.titleEt || 'NASA PÄEVA KOSMOSEPILT';
-
     const fullUrl = data.hdImageUrl || data.imageUrl;
-    hdLinkEl.href = fullUrl;
-    openFullBtnEl.href = fullUrl;
+    imageEl.src = fullUrl;
+    imageEl.alt = data.titleEt || 'NASA PÄEVA KOSMOSEPILT';
+    imageEl.classList.remove('hidden');
 
+    openFullBtnEl.href = fullUrl;
     copyrightEl.textContent = `ALLIKAS: ${data.copyright || 'NASA'}`;
 
     renderReadableParagraphs(explanationEl, data.explanationEt || '');
