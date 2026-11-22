@@ -1,9 +1,3 @@
 {
-  "version": 2,
-  "rewrites": [
-    {
-      "source": "/api/apod",
-      "destination": "/api/apod.js"
-    }
-  ]
+  "version": 2
 }
