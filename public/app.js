@@ -57,6 +57,27 @@ function renderReadableParagraphs(container, uppercaseText) {
   });
 }
 
+/**
+ * Kliendipoolne varutõlge juhuks, kui kõik serveripoolsed tõlketeenused on pilve-IP tõttu piiratud
+ */
+async function translateInBrowser(text) {
+  if (!text || !text.trim()) return text;
+  try {
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=et&dt=t&q=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json) && Array.isArray(json[0])) {
+        const translated = json[0].map((part) => (Array.isArray(part) ? part[0] : '')).join('').trim();
+        if (translated) return translated;
+      }
+    }
+  } catch (err) {
+    console.warn('Kliendipoolne varutõlge ebaõnnestus:', err);
+  }
+  return text;
+}
+
 async function loadSpacePicture() {
   loadingState.classList.remove('hidden');
   errorState.classList.add('hidden');
@@ -70,18 +91,31 @@ async function loadSpacePicture() {
       throw new Error(data.error || 'PILDI LAADIMINE EBAÕNNESTUS.');
     }
 
+    let finalTitle = data.titleEt || data.titleOriginal || '';
+    let finalExplanation = data.explanationEt || '';
+
+    // Kui serveripoolne tõlge ei õnnestunud, teeme tõlke otse külastaja brauseris
+    if (data.isTranslated === false) {
+      const [browserTitle, browserExp] = await Promise.all([
+        translateInBrowser(data.titleRawOriginal || data.titleOriginal || finalTitle),
+        translateInBrowser(data.explanationOriginal || finalExplanation)
+      ]);
+      if (browserTitle) finalTitle = browserTitle.replace(/\s+/g, ' ').trim().toLocaleUpperCase('et-EE');
+      if (browserExp) finalExplanation = browserExp.replace(/\s+/g, ' ').trim().toLocaleUpperCase('et-EE');
+    }
+
     dateDisplayEl.textContent = data.formattedDate || data.date;
-    titleEl.textContent = data.titleEt || data.titleOriginal;
+    titleEl.textContent = finalTitle;
 
     const fullUrl = data.hdImageUrl || data.imageUrl;
     imageEl.src = fullUrl;
-    imageEl.alt = data.titleEt || 'NASA PÄEVA KOSMOSEPILT';
+    imageEl.alt = finalTitle || 'NASA PÄEVA KOSMOSEPILT';
     imageEl.classList.remove('hidden');
 
     openFullBtnEl.href = fullUrl;
     copyrightEl.textContent = `ALLIKAS: ${data.copyright || 'NASA'}`;
 
-    renderReadableParagraphs(explanationEl, data.explanationEt || '');
+    renderReadableParagraphs(explanationEl, finalExplanation);
 
     loadingState.classList.add('hidden');
     contentState.classList.remove('hidden');
